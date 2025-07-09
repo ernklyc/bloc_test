@@ -43,7 +43,6 @@ class FilterControls extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               FocusScope.of(context).unfocus(); 
-              
               context.read<DeviceBloc>().add(FilterDevicesEvent(
                     id: idController.text,
                     name: nameController.text,
