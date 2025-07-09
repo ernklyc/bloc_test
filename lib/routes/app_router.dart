@@ -16,11 +16,11 @@ final router = GoRouter(
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.devices),
-                label: 'Cihazlar',
+                label: 'Devices',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: 'Favoriler',
+                icon: Icon(Icons.person),
+                label: 'Profile',
               ),
             ],
           ),
@@ -38,7 +38,7 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/favorite',
+              path: '/Profile',
               builder: (context, state) => const FavoritePage(),
             ),
           ],

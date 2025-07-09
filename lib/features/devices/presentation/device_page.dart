@@ -28,7 +28,7 @@ class _DevicePageState extends State<DevicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cihazlar (GET VE POST)'),
+        title: const Text('Devices (GET & POST)'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

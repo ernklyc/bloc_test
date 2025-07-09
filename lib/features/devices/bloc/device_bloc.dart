@@ -31,7 +31,9 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
       if (event.isRefreshAfterAdd) {
         print("🎉 Başarılı (Ekleme Sonrası)! Emit: DeviceSuccess with SnackBar message");
-        emit(DeviceSuccess(_allDevices, snackBarMessage: "Yeni cihaz başarıyla listeye eklendi!"));
+        emit(DeviceSuccess(_allDevices, 
+          snackBarMessage: "Yeni cihaz başarıyla listeye eklendi!",
+          timestamp: DateTime.now().millisecondsSinceEpoch));
       } else {
         print("🎉 Başarılı! Emit: DeviceSuccess");
         emit(DeviceSuccess(_allDevices));
@@ -51,8 +53,8 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
     try {
       print("➡️ POST İsteği Gönderiliyor: ${event.newDevice.toJsonForCreation()}");
-      await _deviceRepository.addDevice(event.newDevice);
-      print("✅ POST Yanıtı Başarıyla Alındı");
+      final addedDevice = await _deviceRepository.addDevice(event.newDevice);
+      print("✅ POST Yanıtı Başarıyla Alındı: {id: ${addedDevice.id}, name: ${addedDevice.name}, data: ${addedDevice.data}, createdAt: ${addedDevice.createdAt}}");
 
       print("🔄 Liste güncelleniyor... Yeni Event Tetikleniyor: FetchDevicesEvent");
       add(FetchDevicesEvent(isRefreshAfterAdd: true));
