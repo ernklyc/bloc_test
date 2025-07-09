@@ -1,5 +1,5 @@
 import 'package:bloc_test/features/devices/presentation/device_page.dart';
-import 'package:bloc_test/features/devices/presentation/favorite_page.dart';
+import 'package:bloc_test/features/devices/presentation/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,7 +39,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: '/Profile',
-              builder: (context, state) => const FavoritePage(),
+              builder: (context, state) => const ProfilePage(),
             ),
           ],
         ),

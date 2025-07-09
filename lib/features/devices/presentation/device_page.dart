@@ -91,6 +91,7 @@ class _DevicePageState extends State<DevicePage> {
                           },
                           child: ListTile(
                             leading: CircleAvatar(child: Text(device.id)),
+
                             title: Text(device.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                             subtitle: Padding(
                               padding: const EdgeInsets.only(top: 8.0),
