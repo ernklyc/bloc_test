@@ -1,5 +1,3 @@
-// lib/features/devices/bloc/device_bloc.dart
-
 import 'package:bloc_test/features/devices/model/device_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'device_event.dart';
@@ -34,8 +32,6 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     final currentState = state;
     if (currentState is DeviceSuccess) {
       try {
-        // --- YENİ EKLENEN SATIR BURASI ---
-        // Gönderilecek olan isteği (request) konsola yazdırıyoruz.
         print("➡️ POST İsteği Gönderiliyor: ${event.newDevice.toJsonForCreation()}");
         
         final newDeviceFromApi = await _deviceRepository.addDevice(event.newDevice);

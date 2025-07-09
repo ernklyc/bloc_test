@@ -23,19 +23,18 @@ class DevicePage extends StatelessWidget {
         ],
       ),
       body: BlocConsumer<DeviceBloc, DeviceState>(
+        listenWhen: (previousState, currentState) {
+          return previousState is DeviceSuccess &&
+                 currentState is DeviceSuccess &&
+                 currentState.devices.length > previousState.devices.length;
+        },
         listener: (context, state) {
-          if (state is DeviceError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else if (state is DeviceSuccess) {
-            // İsteğe bağlı: Başarılı ekleme sonrası bir bildirim.
-            // Bu kısım, event'in nereden geldiğini bilmediği için her liste
-            // güncellemesinde çalışır, bu yüzden dikkatli kullanılmalıdır.
-          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Yeni cihaz başarıyla listeye eklendi!"),
+              backgroundColor: Colors.green,
+            ),
+          );
         },
         builder: (context, state) {
           if (state is DeviceLoading || state is DeviceInitial) {
@@ -49,12 +48,10 @@ class DevicePage extends StatelessWidget {
               itemCount: state.devices.length,
               itemBuilder: (context, index) {
                 final device = state.devices[index];
-
                 String formatData(Map<String, dynamic>? data) {
                   if (data == null || data.isEmpty) return 'Ek bilgi yok';
                   return data.entries.map((e) => '${e.key}: ${e.value}').join('\n');
                 }
-
                 return Card(
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   clipBehavior: Clip.antiAlias,
@@ -66,12 +63,6 @@ class DevicePage extends StatelessWidget {
                         data: device.data,
                       );
                       context.read<DeviceBloc>().add(AddDeviceEvent(selectedDeviceForPost));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("'${device.name}' için POST isteği gönderildi."),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
                     },
                     child: ListTile(
                       leading: CircleAvatar(child: Text(device.id)),
@@ -87,11 +78,12 @@ class DevicePage extends StatelessWidget {
               },
             );
           }
+           if (state is DeviceError) {
+            return Center(child: Text('Hata oluştu: ${state.message}'));
+          }
           return const Center(child: Text('Bilinmeyen bir durum oluştu.'));
         },
       ),
-      // floatingActionButton kaldırıldı.
-      floatingActionButton: null,
     );
   }
 }
