@@ -11,12 +11,17 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     on<AddDeviceEvent>(_onAddDevice);
   }
 
-  Future<void> _onFetchDevices(FetchDevicesEvent event, Emitter<DeviceState> emit) async {
+  Future<void> _onFetchDevices(
+    FetchDevicesEvent event,
+    Emitter<DeviceState> emit,
+  ) async {
     print("-> 🔴🔵 FetchDevicesEvent alındı, cihazlar çekiliyor...");
     emit(DeviceLoading());
     try {
       final devices = await _deviceRepository.getDevices();
-      print("-> 🟢🟢 GET isteği başarılı. Toplam ${devices.length} cihaz alındı.");
+      print(
+        "-> 🟢🟢 GET isteği başarılı. Toplam ${devices.length} cihaz alındı.",
+      );
       emit(DeviceSuccess(devices));
     } catch (e) {
       print("-> 🔴🔴 HATA: Cihazlar çekilemedi: $e");
@@ -24,17 +29,24 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     }
   }
 
-  Future<void> _onAddDevice(AddDeviceEvent event, Emitter<DeviceState> emit) async {
+  Future<void> _onAddDevice(
+    AddDeviceEvent event,
+    Emitter<DeviceState> emit,
+  ) async {
     print("-> 🟢🟢 AddDeviceEvent alındı, yeni cihaz ekleniyor...");
     try {
-      await _deviceRepository.addDevice(event.newDevice);
+      final newDeviceFromApi = await _deviceRepository.addDevice(
+        event.newDevice,
+      );
+      print(
+        "✅ POST Yanıtı: Sunucudan dönen nesne: ${newDeviceFromApi.toString()}",
+      );
+
       print("-> 🟢🟢 POST isteği BAŞARILI. Şimdi liste yenilenecek.");
       add(FetchDevicesEvent());
-
     } catch (e) {
       print("-> 🔴🔴 HATA: Cihaz eklenemedi: $e");
       emit(DeviceError("Cihaz eklenemedi: ${e.toString()}"));
-
     }
   }
 }
