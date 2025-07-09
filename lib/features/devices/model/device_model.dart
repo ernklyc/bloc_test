@@ -30,5 +30,10 @@ class Device extends Equatable {
   }
 
   @override
+  String toString() {
+    return 'Device(id: $id, name: $name, data: $data, createdAt: $createdAt)';
+  }
+
+  @override
   List<Object?> get props => [id, name, data, createdAt];
 }
