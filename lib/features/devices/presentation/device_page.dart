@@ -12,7 +12,7 @@ class DevicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cihazlar (Tıkla ve Gönder)'),
+        title: const Text('Cihazlar (GET VE POST)'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

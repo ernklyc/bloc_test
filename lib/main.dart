@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
           RepositoryProvider.of<DeviceRepository>(context),
         )..add(FetchDevicesEvent()),
         child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Dio & BLoC Demo',
           home: DevicePage(),
         ),

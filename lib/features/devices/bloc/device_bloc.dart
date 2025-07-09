@@ -1,4 +1,3 @@
-import 'package:bloc_test/features/devices/model/device_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'device_event.dart';
 import 'device_state.dart';
@@ -29,23 +28,17 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     AddDeviceEvent event,
     Emitter<DeviceState> emit,
   ) async {
-    final currentState = state;
-    if (currentState is DeviceSuccess) {
-      try {
-        print("➡️ POST İsteği Gönderiliyor: ${event.newDevice.toJsonForCreation()}");
-        
-        final newDeviceFromApi = await _deviceRepository.addDevice(event.newDevice);
-        print("✅ POST Yanıtı Alındı: ${newDeviceFromApi.toString()}");
+    try {
+      print("➡️ POST İsteği Gönderiliyor: ${event.newDevice.toJsonForCreation()}");
+      final newDeviceFromApi = await _deviceRepository.addDevice(event.newDevice);
+      print("✅ POST Yanıtı Alındı: ${newDeviceFromApi.toString()}");
 
-        final updatedList = List<Device>.from(currentState.devices)
-          ..add(newDeviceFromApi);
-        
-        emit(DeviceSuccess(updatedList));
+      print("🔄 POST başarılı, sunucudan güncel liste isteniyor...");
+      add(FetchDevicesEvent());
 
-      } catch (e) {
-        print("🔴 HATA: Cihaz eklenemedi: $e");
-        emit(DeviceError("Cihaz eklenemedi: ${e.toString()}"));
-      }
+    } catch (e) {
+      print("🔴 HATA: Cihaz eklenemedi: $e");
+      emit(DeviceError("Cihaz eklenemedi: ${e.toString()}"));
     }
   }
 }
